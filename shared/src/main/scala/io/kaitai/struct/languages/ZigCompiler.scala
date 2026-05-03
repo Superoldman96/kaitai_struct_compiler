@@ -724,7 +724,7 @@ class ZigCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
     useIo: Boolean
   ): Unit = {
     // NOTE: this condition works for now because we haven't implemented
-    // https://github.com/kaitai-io/kaitai_struct/issues/778 for Java yet, but
+    // https://github.com/kaitai-io/kaitai_struct/issues/778 for Zig yet, but
     // it will need to be changed when we do.
     attrValidate(attr, s"${translator.translate(valueExpr)} == null", err, useIo, valueExpr, None)
   }

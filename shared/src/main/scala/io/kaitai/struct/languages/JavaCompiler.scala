@@ -1243,10 +1243,8 @@ class JavaCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
     err: ValidationNotInEnumError,
     useIo: Boolean
   ): Unit = {
-    // NOTE: this condition works for now because we haven't implemented
-    // https://github.com/kaitai-io/kaitai_struct/issues/778 for Java yet, but
-    // it will need to be changed when we do.
-    attrValidate(attr, s"${translator.translate(valueExpr)} == null", err, useIo, valueExpr, None)
+    val enumClass = types2class(et.owner :+ et.name)
+    attrValidate(attr, s"!(${translator.translate(valueExpr)} instanceof $enumClass)", err, useIo, valueExpr, None)
   }
 
   private def attrValidate(
