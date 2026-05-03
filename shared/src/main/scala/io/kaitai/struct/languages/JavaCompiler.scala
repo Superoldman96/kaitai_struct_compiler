@@ -755,6 +755,7 @@ class JavaCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
         out.puts(s"switch (($enumClass)on) {")
         out.inc
 
+        // Pass 1: only normal case clauses
         cases.foreach { case (condition, result) =>
           condition match {
             case SwitchType.ELSE_CONST =>
@@ -764,6 +765,13 @@ class JavaCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
               normalCaseProc(result)
               switchCaseEnd()
           }
+        }
+
+        // Pass 2: else clause, if it is there
+        cases.get(SwitchType.ELSE_CONST).foreach { (result) =>
+          switchElseStart()
+          elseCaseProc(result)
+          switchElseEnd()
         }
 
         out.dec
