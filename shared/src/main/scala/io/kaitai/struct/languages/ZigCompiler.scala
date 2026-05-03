@@ -724,7 +724,7 @@ class ZigCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
     useIo: Boolean
   ): Unit = {
     // NOTE: this condition works for now because we haven't implemented
-    // https://github.com/kaitai-io/kaitai_struct/issues/778 for Java yet, but
+    // https://github.com/kaitai-io/kaitai_struct/issues/778 for Zig yet, but
     // it will need to be changed when we do.
     attrValidate(attr, s"${translator.translate(valueExpr)} == null", err, useIo, valueExpr, None)
   }
@@ -813,7 +813,7 @@ object ZigCompiler extends LanguageCompilerStatic
         if (isExternal) {
           externalTypeDeclaration(ExternalEnum(et.enumSpec.get), importList)
         }
-        types2class(et.name, isExternal)
+        types2class(et.owner :+ et.name, isExternal)
       }
 
       case at: ArrayType => s"*_imp_std.ArrayList(${kaitaiType2NativeType(at.elType, importList, curClass)})"
@@ -854,7 +854,7 @@ object ZigCompiler extends LanguageCompilerStatic
       case ut: UserType => ut.name.last
       // NOTE: at the time of writing, this is unreachable because the `enum` key is not compatible
       // with type switching
-      case et: EnumType => et.name.last
+      case et: EnumType => et.name
     }
 
   def switchTaggedUnionName(id: Identifier): String = {
