@@ -988,7 +988,7 @@ class JavaCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
     out.puts("@Override");
     out.puts("public boolean equals(Object other) {");
     out.inc
-    out.puts("return other instanceof Unknown && this.id == ((Unknown)other).id;")
+    out.puts(s"return other instanceof $enumIface.Unknown && this.id == (($enumIface.Unknown)other).id;")
     out.dec
     out.puts("}");
     out.dec
