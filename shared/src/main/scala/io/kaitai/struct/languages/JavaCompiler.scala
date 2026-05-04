@@ -1020,7 +1020,7 @@ class JavaCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
 
     out.puts
     out.puts("private final long id;")
-    out.puts(s"private static final HashMap<Long, $enumIface> variants = new HashMap<>(${enumColl.size});")
+    out.puts(s"private static final HashMap<Long, $enumClass> variants = new HashMap<>(${enumColl.size});")
     out.puts("static {")
     out.inc
     out.puts(s"for ($enumClass e : values()) {")
@@ -1033,7 +1033,12 @@ class JavaCompiler(typeProvider: ClassTypeProvider, config: RuntimeConfig)
     out.puts
     out.puts(s"public static $enumIface byId(final long id) {")
     out.inc
-    out.puts(s"return variants.computeIfAbsent(id, _id -> new $enumIface.Unknown(id));")
+    out.puts(s"final $enumClass entry = variants.get(id);")
+    out.puts("if (entry != null)")
+    out.inc
+    out.puts("return entry;")
+    out.dec
+    out.puts(s"return new $enumIface.Unknown(id);")
     out.dec
     out.puts("}") // byId(...)
     out.puts
